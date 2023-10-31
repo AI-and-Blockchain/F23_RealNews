@@ -1,0 +1,11 @@
+Real News stands at the forefront of combating misinformation by providing a unique, decentralized platform where users can post claims for verification, akin to how one would on Twitter or Snopes. 
+This innovative project, especially relevant in the digital age, is developed as a part of our AI and Blockchain course at Rensselaer Polytechnic Institute. At its core, Real News functions as a 
+community-driven platform where users post claims or statements, which are then subjected to a rigorous fact-checking process. This process is significantly enhanced by the integration of Google’s 
+Bard AI, which acts as an advanced news aggregator. The AI scours the internet to provide context and potential sources related to the claims, thereby assisting the fact-checkers in their verification tasks.
+The fact-checkers, responsible for the initial phase of verification, use the AI-generated insights to locate and link credible sources that substantiate or refute the claim. This is followed by the 
+involvement of validators, who can be any user on the platform. They review these sources and vote on the claim’s accuracy, marking it as “verified” or “misinformation.” The democratic nature of this 
+process allows for a broad base of validators, each casting “upvotes” or “downvotes,” which collectively determine the claim's credibility. A pivotal aspect of Real News is the incorporation of 
+blockchain technology. For maintaining transparency and integrity, the platform utilizes the blockchain to store the hashes of each claim. The actual claims and their associated verification data 
+are stored off-chain, using the InterPlanetary File System (IPFS) to ensure decentralized and secure data management. To further engage and incentivize the community, Real News introduces a token-based 
+reward system. Both fact-checkers and validators are rewarded with tokens for their contributions to the platform’s reliability and accuracy. This approach not only motivates continuous participation 
+but also fosters a sense of community amongst users, encouraging them to actively partake in the battle against misinformation.
