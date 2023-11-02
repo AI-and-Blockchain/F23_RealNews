@@ -1,0 +1,33 @@
+We are going to create and store posts on the blockchain but we are going to store all of the long text items off the 
+chain and simply store their IPFS hash on the chain so we can access them.
+
+what a post will probably look like on the chain
+
+struct Post{
+    id: int
+    claimHash: 
+    factCheckerHash:
+    upvotes: int
+    downvotes: int
+}
+
+example workflow:
+1. a user on the front end posts something
+2. we take that claim and generate a response from google bard
+3. create json file from that information
+{
+    claim: "",
+    response: ""
+}
+
+4. upload that file to IPFS and get the hash
+5. call our contract and create a post on the chain. For now it will only have an ID and the claimHash
+6. Once its posted a factchecker can see it and do their job
+7. fact checker will upload a conclusion and their links we will create a json file from that and store it on IPFS
+{
+    factual: bool,
+    conclusion: string,
+    links: ["string"]
+}
+8. we will get that hash and update the original post on the chain with the factCheckerHash
+9. Anytime someone upvotes or downvotes we call the contract and simply increment the numbers
