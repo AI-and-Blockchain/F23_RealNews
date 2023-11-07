@@ -10,10 +10,11 @@
 ![Architecture Diagram](https://github.com/AI-and-Blockchain/F23_RealNews/blob/bf57f54f82967a908a2b76d098fadd60f62fdd69/architecture%20diagram.PNG)
 
 # Blockchain Architecture
-![Blockchain Architecture](https://github.com/AI-and-Blockchain/F23_RealNews/blob/7276c7be785f13ee4ed736c11ef4958f9dbaa0af/Blockchain%20Architecture.docx)
+![Blockchain Architecture](https://github.com/ayushk1122/F23_RealNews/blob/3184fa61fedb0f5d3bdf5c93fe3573ebf712034e/Blockchain_architecture)
 
 # AI Architecture
-[AI Architecture](AI_Architecture.md)
+[AI Architecture](https://github.com/ayushk1122/F23_RealNews/blob/3184fa61fedb0f5d3bdf5c93fe3573ebf712034e/AI_Architecture)
+
 
 
 
