@@ -13,7 +13,7 @@
 ![Blockchain Architecture](https://github.com/AI-and-Blockchain/F23_RealNews/blob/7276c7be785f13ee4ed736c11ef4958f9dbaa0af/Blockchain%20Architecture.docx)
 
 # AI Architecture
-[AI Architecture](AI%20Architecture.md)
+[AI Architecture](AI_Architecture.md)
 
 
 
