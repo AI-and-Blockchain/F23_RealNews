@@ -1,0 +1,38 @@
+**Blockchain Architecture**
+
+**Token Name: CredCoin**
+
+**Architecture Overview**
+
+The blockchain component of Real News is centered around the creation and distribution of "CredCoin," a custom token designed to incentivize and reward the validators and fact-checkers on the platform. The entire system is underpinned by Ethereum's blockchain technology, leveraging its robust and secure infrastructure for our decentralized application (dApp).
+
+**Solidity Smart Contracts**
+
+- The core functionality of CredCoin is governed by Solidity smart contracts, which are responsible for:
+- Token Generation: The initial minting of CredCoins will be defined in the contract, ensuring a fixed supply to prevent inflation and maintain value. The smart contract will control the total supply and circulation of tokens.
+- Rewards Distribution: Upon successful verification (or refutation) of a claim, the smart contract automatically allocates CredCoins to the respective fact-checkers and validators. This ensures a fair and transparent reward mechanism, free from any manual intervention or bias.
+- Token Transfer and Management: Users can transfer CredCoins within the platform. The smart contract will handle these transactions, ensuring secure and verifiable transfers between accounts.
+
+**Blockchain Integration with Real News**
+
+- Storing Claims and Verifications: While the actual text of claims and associated verification data are stored off-chain on IPFS, the blockchain will store their immutable hashes. This approach ensures data integrity, allowing any changes or tampering to be easily detected.
+- Token-Based Incentives: As users verify or refute claims, the smart contract records their contributions and automatically credits CredCoins to their accounts. This process not only incentivizes participation but also adds a layer of gamification to the platform.
+- Decentralized Voting Mechanism: Validators' votes on claims are recorded on the blockchain, ensuring a transparent and tamper-proof voting process. This reinforces the credibility and reliability of the validation process.
+- Security and Transparency: Utilizing Ethereum's blockchain ensures that all transactions and activities on the platform are secure, transparent, and immutable. This is crucial in maintaining the integrity and trustworthiness of Real News.
+- Tokenomics and Governance: CredCoin will also play a role in the governance of the platform, with possibilities for future developments where token holders could have a say in key decisions, platform updates, or policy changes.
+
+**Rationale**
+
+The rationale behind incorporating blockchain into Real News is multifaceted:
+
+- Integrity and Trust: Blockchain's inherent characteristics of immutability and transparency ensure that the verification process remains untampered and trustworthy.
+- Incentivization: CredCoin motivates users to actively participate in fact-checking and validation, fostering a community-driven approach to combating misinformation.
+- Security and Decentralization: Leveraging blockchain technology guarantees secure data handling and decentralizes the control over the information, preventing any central point of failure or censorship.The Bard API fetches information from the internet and returns it to the Fact Checker.
+
+The Fact Checker validates the claim and uploads the supporting links, possibly to IPFS.
+
+The Blockchain stores the hash of the claim and any related data.
+
+Validators vote on the claim using the information provided.
+
+The outcome (verified or misinformation) is then communicated back to the User.
