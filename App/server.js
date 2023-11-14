@@ -1,20 +1,25 @@
 const ethers = require('ethers');
 require('dotenv').config();
-var port = 3000;
-const API_URL = process.env.API_URL;
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const contractAddress = process.env.CONTRACT_ADDRESS;
-
-const provider = new ethers.providers.JsonRpcProvider(API_URL);
-const signer = new ethers.Wallet(PRIVATE_KEY, provider);
-//we get this after deploying the contract
-const {abi} = require("./artifacts/contracts/contractApi.sol/contractApi.json");
-const contractInstance = new ethers.Contract(contractAddress, abi, signer);
-
+const cors = require('cors');
 const express = require('express');
-const { default: Moralis } = require('moralis/.');
+const Moralis  = require('moralis');
 const app = express();
 app.use(express.json());
+var port = 5000;
+app.use(cors({
+    origin: 'http://localhost:5000'
+}))
+// const API_URL = process.env.API_URL;
+// const PRIVATE_KEY = process.env.PRIVATE_KEY;
+// const contractAddress = process.env.CONTRACT_ADDRESS;
+
+// const provider = new ethers.providers.JsonRpcProvider(API_URL);
+// const signer = new ethers.Wallet(PRIVATE_KEY, provider);
+// //we get this after deploying the contract
+// const {abi} = require("./artifacts/contracts/contractApi.sol/contractApi.json");
+// const contractInstance = new ethers.Contract(contractAddress, abi, signer);
+
+
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"))
@@ -113,3 +118,5 @@ app.post("/createPost", async (req, res) => {
 //upvote
 
 //downvote
+
+app.listen(port, () => {console.log(`server started on ${port}`)})
