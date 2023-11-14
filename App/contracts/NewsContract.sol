@@ -8,6 +8,7 @@ contract NewsContract {
         string factCheckHash;
         uint256 upvotes;
         uint256 downvotes;
+        uint256 hashCheck;
     }
     address owner;
     //all posts
