@@ -8,12 +8,12 @@ contract NewsContract {
         string factCheckHash;
         uint256 upvotes;
         uint256 downvotes;
+        uint256 hashCheck;
     }
     address owner;
-
     //all posts
     mapping (uint256 => Post) public posts;
-    Post[] public postArray;
+    uint256 public postCount = 0; // To keep track of posts
 
     constructor() {
         owner = msg.sender;
@@ -28,11 +28,15 @@ contract NewsContract {
     //hashes and IPFS 
 
     //create a post with its IPFS hash
-    function createPost () public onlyOwner {
-        
-        Product memory product = Product(_id, _name, _price, _quantity);
-        products[_id] = product; 
-        productArray.push(Product(_id, _name, _price, _quantity));
+    function createPost(string memory _claimHash) public onlyOwner {
+        posts[postCount] = Post(postCount, _claimHash, "", 0, 0);
+        postCount++;
+    }
+
+    function updatePost(uint256 _id, string memory _factCheckHash) public onlyOwner {
+        require(_id < postCount, "Post does not exist");
+        Post storage post = posts[_id];
+        post.factCheckHash = _factCheckHash;
     }
 
     //get a post from IPFS, should return the hash
@@ -56,12 +60,26 @@ contract NewsContract {
     }
 
     //so anyone can upvote/downvote a post based on fact checkers reviews
-    function upVote() public {
-
+    function upVote(uint256 _id) public {
+        require(_id < postCount, "Post does not exist");
+        posts[_id].upvotes += 1;
     }
 
-    function downVote() public {
-
+    function downVote(uint256 _id) public {
+        require(_id < postCount, "Post does not exist");
+        posts[_id].downvotes += 1;
     }
 
+    function getPost(uint256 _id) public view returns (Post memory) {
+        require(_id < postCount, "Post does not exist");
+        return posts[_id];
+    }
+
+    function getAllPosts() public view returns (Post[] memory) {
+        Post[] memory allPosts = new Post[](postCount);
+        for (uint i = 0; i < postCount; i++) {
+            allPosts[i] = posts[i];
+        }
+        return allPosts;
+    }
 }
