@@ -13,6 +13,7 @@ def get_bard_response(query):
     return data["text"]
 
 def bardFactcheck(query):
+    query = "Fact Check (With sources): "+query
     response = get_bard_response(query)
     print("Google Bard Response:")
     print(response)
