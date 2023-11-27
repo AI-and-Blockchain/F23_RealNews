@@ -42,7 +42,6 @@ class Navbar extends Component {
               </ul>
             </div>
             <Modal show={this.state.show} handleClose={this.hideModal}>
-              <p>Modal</p>
             </Modal>
             <button className='btn btn-primary' onClick={this.showModal}>Post +</button>
           </div>
