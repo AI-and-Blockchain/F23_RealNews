@@ -37,7 +37,6 @@ const Modal = ({ handleClose, show }) => {
       const result = await pinJSONToIPFS(post);
       if (result && result.IpfsHash) {
         console.log('Stored on IPFS with hash:', result.IpfsHash);
-        // You can now use the IPFS hash as needed
       }
     } catch (error) {
       console.error('Error uploading post to IPFS:', error);
