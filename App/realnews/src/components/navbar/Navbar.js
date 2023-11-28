@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import "./Navbar.css"
 import Modal from '../postForm/postForm.js';
+import UnverifiedNews from '../unverifiedNews/unverifiedNews.js';
+import News from  '../news/News.js'
 
 class Navbar extends Component {
   constructor() {
@@ -22,6 +25,7 @@ class Navbar extends Component {
 
   render() {
     return (
+      <Router>
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
             <a className="navbar-brand" href="#"><b>RealNews</b></a>
@@ -31,13 +35,13 @@ class Navbar extends Component {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#">Home</a>
+                  <Link to="/"><a className="nav-link active" aria-current="page" href="#">Home</a></Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#">About</a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">Fact Checker Login</a>
+                  <Link to="/fact-checker"><a className="nav-link">Fact Checking</a></Link>
                 </li>
               </ul>
             </div>
@@ -46,6 +50,11 @@ class Navbar extends Component {
             <button className='btn btn-primary' onClick={this.showModal}>Post +</button>
           </div>
         </nav>
+        <Routes>
+          <Route path="/fact-checker" element={<UnverifiedNews />} />
+          <Route path="/" element={<News />} />
+        </Routes>
+      </Router>
     )
   }
 }
