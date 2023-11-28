@@ -1,0 +1,19 @@
+Fame the task as a natural language question: Start by clearly stating the task you want PaLM 2 to perform, using natural language that the model can understand. For instance, you could say,
+"Can you please determine whether the following statements are true or false? Provide at least one source to support your claim for each statement."
+Provide specific statements for evaluation: Present the statements you want PaLM 2 to evaluate, one at a time. Ensure each statement is clearly articulated and easy for the model to process.
+Specify the desired format for sources: Indicate the format you prefer for the sources provided by PaLM 2. For example, you could specify "Please provide links to the sources in a list format."
+Initiate the prompt with a clear instruction: Begin the prompt with an instruction that directly tells PaLM 2 to perform the task. For instance, you could say, 
+"Please follow these guidelines to evaluate the following statements and provide sources for your claims:"
+Here's an example of how you could format the prompt for PaLM 2:
+
+Please follow these guidelines to evaluate the following statements and provide sources for your claims:
+
+Use credible and reliable sources, such as academic journals, reputable news organizations, or government websites.
+Avoid using biased or unreliable sources, such as personal blogs, social media posts, or websites with an agenda.
+If you cannot find a source to support or contradict a statement, indicate that you were unable to verify the statement.
+
+Statements to evaluate:
+
+The Earth is flat.
+Vaccines cause autism.
+Marijuana is a gateway drug.
