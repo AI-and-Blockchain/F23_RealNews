@@ -16,6 +16,13 @@
 # AI Architecture
 [AI Architecture](https://github.com/ayushk1122/F23_RealNews/blob/3184fa61fedb0f5d3bdf5c93fe3573ebf712034e/AI_Architecture)
 
+# Setup Instructions
 
-
-
+1. Install Node on your computer
+2. Clone our repository on your computer and open a terminal in the directory.
+3. run cd App
+4. run npm install
+5. run npm start (this starts the backend/server)
+6. run cd realnews
+7. run npm install
+8. run npm start (this starts the frontend and should open a window in your web browser)

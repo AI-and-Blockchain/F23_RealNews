@@ -28,11 +28,13 @@ def run(statement):
     )
     #print(completion.result)
     return completion.result
-def startpalm(query):
+def bardFactcheck(query):
     res = run(query)
     return res
+
 
 if __name__ == "__main__":
     #enter test query
     query = "is the earth flat?"
-    print(startpalm(query))
+    print(bardFactcheck(query))
+
