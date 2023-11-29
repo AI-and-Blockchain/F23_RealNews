@@ -30,7 +30,13 @@ class UnverifiedNews extends Component {
     fetchPostsFromIPFS = async () => {
         try {
             const storedPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
-            const fetchedPosts = await Promise.all(storedPosts.map(async (post) => {
+            var unverified = [];
+            for (var i = 0; i < storedPosts.length; i++) {
+                if (storedPosts[i].verified == false) {
+                    unverified.push(storedPosts[i])
+                }
+            }
+            const fetchedPosts = await Promise.all(unverified.map(async (post) => {
                 const url = `https://amber-eligible-bear-775.mypinata.cloud/ipfs/${post.hash}`;
                 const response = await axios.get(url);
                 console.log('Fetched post data:', response.data);
