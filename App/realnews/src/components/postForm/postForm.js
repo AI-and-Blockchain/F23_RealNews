@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './postForm.css';
 
+const saveHash = (postTitle, hash) => {
+  const existingPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
+  const newPost = { title: postTitle, hash: hash };
+  existingPosts.push(newPost);
+  localStorage.setItem('ipfsPosts', JSON.stringify(existingPosts));
+};
+
+
 const Modal = ({ handleClose, show }) => {
   const [postTitle, setPostTitle] = useState('');
   const [postBody, setPostBody] = useState('');
@@ -27,23 +35,28 @@ const Modal = ({ handleClose, show }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submission started");
+    if (!postTitle || !postBody) {
+      setErrorMessage('Please enter both title and body for the post.');
+      return;
+    }
 
-    // Create the post object
+    console.log("Form submission started");
     const post = { title: postTitle, body: postBody };
 
-    // Upload the post to IPFS via Pinata
     try {
       const result = await pinJSONToIPFS(post);
       if (result && result.IpfsHash) {
         console.log('Stored on IPFS with hash:', result.IpfsHash);
+        saveHash(postTitle, result.IpfsHash);
+        setPostTitle('');
+        setPostBody('');
+        handleClose();
+      } else {
+        setErrorMessage('Failed to get a valid response from IPFS.');
       }
     } catch (error) {
       console.error('Error uploading post to IPFS:', error);
     }
-
-    // Close the modal
-    handleClose();
   };
 
   return (
