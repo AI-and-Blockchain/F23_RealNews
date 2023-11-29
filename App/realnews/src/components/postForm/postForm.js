@@ -4,7 +4,7 @@ import './postForm.css';
 
 const saveHash = (postTitle, hash) => {
   const existingPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
-  const newPost = { title: postTitle, hash: hash };
+  const newPost = { title: postTitle, hash: hash, verified: false, upvotes: 0, downvotes: 0, aiResponse:"", source:""};
   existingPosts.push(newPost);
   localStorage.setItem('ipfsPosts', JSON.stringify(existingPosts));
 };
@@ -36,12 +36,12 @@ const Modal = ({ handleClose, show }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!postTitle || !postBody) {
-      setErrorMessage('Please enter both title and body for the post.');
+      alert('Please enter both title and body for the post.');
       return;
     }
 
     console.log("Form submission started");
-    const post = { title: postTitle, body: postBody };
+    const post = { title: postTitle, body: postBody};
 
     try {
       const result = await pinJSONToIPFS(post);
@@ -52,7 +52,7 @@ const Modal = ({ handleClose, show }) => {
         setPostBody('');
         handleClose();
       } else {
-        setErrorMessage('Failed to get a valid response from IPFS.');
+        alert('Failed to get a valid response from IPFS.');
       }
     } catch (error) {
       console.error('Error uploading post to IPFS:', error);
