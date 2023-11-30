@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 var port = 5000;
 app.use(cors({
-    origin: 'http://localhost:5000'
+    origin: 'http://localhost:3000'
 }))
 // const API_URL = process.env.API_URL;
 // const PRIVATE_KEY = process.env.PRIVATE_KEY;
@@ -28,6 +28,40 @@ app.get("/", (req, res) => {
 app.get("/index.html", (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"))
 });
+
+// Replace with your private key
+// const privateKey = 'yourPrivateKey';
+
+// // Replace with your ERC-20 token contract address and ABI
+// const tokenAddress = '0xYourTokenAddress';
+// const tokenABI = 'hi';
+
+// // Connect to the Ethereum provider
+// const provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/yourInfuraApiKey');
+// const wallet = new ethers.Wallet(privateKey, provider);
+
+// ERC-20 token contract instance
+// const tokenContract = new ethers.Contract(tokenAddress, tokenABI, wallet);
+
+// API endpoint to send ERC-20 tokens
+app.post('/get-tokens', async (req, res) => {
+    console.log(req.body.address)
+    res.status(200).json({success:true})
+    // try {
+    //   // Replace with the recipient's MetaMask address
+    //   const recipientAddress = req.address
+    //   const amount = 100; // Replace with the amount of tokens to send
+  
+    //   // Sign and send the transaction
+    //   const tx = await tokenContract.transfer(recipientAddress, amount);
+    //   await tx.wait();
+  
+    //   res.status(200).json({ success: true, message: 'Tokens sent successfully' });
+    // } catch (error) {
+    //   console.error('Error sending tokens:', error);
+    //   res.status(500).json({ success: false, message: 'Error sending tokens' });
+    // }
+  });
 
 //shell of route for creating a post
 app.post("/createPost", async (req, res) => {

@@ -2,6 +2,8 @@
 
 import './factCheckForm.css';
 import React, { useEffect, useState } from "react";
+import axios from 'axios'
+import { ethers } from "ethers";
 
 const Modal = ({ handleClose, show, postHash }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
@@ -9,6 +11,7 @@ const Modal = ({ handleClose, show, postHash }) => {
   const [source, setSource] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [account, setAccount] = useState('');
 
   const handleSourceChange = event => {
     setSource(event.target.value);
@@ -23,8 +26,42 @@ const Modal = ({ handleClose, show, postHash }) => {
     }
   }, [postHash]);
 
-  const handleFactCheck = event => {
+  const handlePayment = async () => {
+    console.log(account)
+    // Make a POST request to the backend
+    const response = await fetch('http://localhost:5000/get-tokens', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        address: account,
+      }),
+    });
+    if (response.ok) {
+      // If the response is successful, update the UI or do other tasks
+      const result = await response.json();
+      console.log(result);
+    } else {
+      // Handle error cases
+      console.error('Error');
+    }
+  }
+
+  const handleFactCheck = async event => {
+    alert("Open MetaMask Now")
     event.preventDefault();
+
+    //connect to metamask account
+    if (window.ethereum) {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        // Get the first account from the array
+        const selectedAccount = accounts[0];
+
+        // Update the state with the connected account
+        setAccount(selectedAccount);
+    }
+    
     const storedPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
     storedPosts.forEach(post => {
         if (post.hash === postHash) {
@@ -34,8 +71,11 @@ const Modal = ({ handleClose, show, postHash }) => {
     });
     localStorage.setItem('ipfsPosts', JSON.stringify(storedPosts));
     handleClose();
+    //get tokens from server
+    await handlePayment();
   };
 
+  
   return (
     <div className={showHideClassName}>
       <section className="modal-main">
