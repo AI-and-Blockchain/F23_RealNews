@@ -1,3 +1,5 @@
+
+
 import React, { Component } from "react";
 import axios from "axios";
 import Modal from '../factCheckForm/factCheckForm.js';
@@ -6,53 +8,46 @@ class UnverifiedNews extends Component {
     constructor() {
         super();
         this.state = {
-            show: false,
-            posts: [], // Add a state variable to store the fetched posts
+            showModal: false,
+            currentHash: '',
+            posts: [],
         };
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
     }
 
     componentDidMount() {
-        // Fetch posts from IPFS when the component mounts
         this.fetchPostsFromIPFS();
     }
 
-    showModal = () => {
-        this.setState({ show: true });
-    };
+    showModal(hash) {
+        this.setState({ 
+            showModal: true,
+            currentHash: hash
+        });
+    }
 
-    hideModal = () => {
-        this.setState({ show: false });
-    };
+    hideModal() {
+        this.setState({ showModal: false });
+    }
 
-    // Function to fetch posts from IPFS
-    fetchPostsFromIPFS = async () => {
+    async fetchPostsFromIPFS() {
         try {
             const storedPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
-            var unverified = [];
-            for (var i = 0; i < storedPosts.length; i++) {
-                if (storedPosts[i].verified == false) {
-                    unverified.push(storedPosts[i])
-                }
-            }
+            let unverified = storedPosts.filter(post => !post.verified);
             const fetchedPosts = await Promise.all(unverified.map(async (post) => {
                 const url = `https://amber-eligible-bear-775.mypinata.cloud/ipfs/${post.hash}`;
                 const response = await axios.get(url);
-                console.log('Fetched post data:', response.data);
-                return { ...response.data, title: post.title };
+                return { ...response.data, hash: post.hash, title: post.title };
             }));
-
-            console.log('All fetched posts:', fetchedPosts);
-            this.setState({ posts: fetchedPosts }); // Update the state with fetched posts
+            this.setState({ posts: fetchedPosts });
         } catch (error) {
             console.error('Error fetching posts from IPFS:', error);
-            // Handle error here
         }
-    };
+    }
 
     render() {
-        const { posts, show } = this.state; // Destructure posts and show from state
+        const { posts, showModal, currentHash } = this.state;
 
         return (
             <>
@@ -64,14 +59,12 @@ class UnverifiedNews extends Component {
                                 <h5 className="card-title">{post.title}</h5>
                                 <p className="card-text">{post.body}</p>
                                 <div className="mt-auto">
-                                    <Modal show={show} handleClose={this.hideModal}></Modal>
-                                    <div className="row">
-                                        <a onClick={this.showModal} className="btn btn-primary">Fact Check This Story</a>
-                                    </div>
+                                    <button onClick={() => this.showModal(post.hash)} className="btn btn-primary">Fact Check This Story</button>
                                 </div>
                             </div>
                         </div>
                     ))}
+                    <Modal show={showModal} handleClose={this.hideModal} postHash={currentHash} />
                 </div>
             </>
         )
@@ -79,3 +72,4 @@ class UnverifiedNews extends Component {
 }
 
 export default UnverifiedNews;
+
