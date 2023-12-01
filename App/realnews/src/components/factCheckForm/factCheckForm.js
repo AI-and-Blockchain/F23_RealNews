@@ -11,12 +11,17 @@ const Modal = ({ handleClose, show, postHash }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
 
   const [source, setSource] = useState('');
+  const [conclusion, setConclusion] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [account, setAccount] = useState('');
 
   const handleSourceChange = event => {
     setSource(event.target.value);
+  };
+
+  const handleConclusionChange = event => {
+    setConclusion(event.target.value);
   };
 
   useEffect(() => {
@@ -108,6 +113,7 @@ const Modal = ({ handleClose, show, postHash }) => {
         if (post.hash === postHash) {
             post.verified = true;
             post.source = source;
+            post.conclusion = conclusion;
         }
     });
     localStorage.setItem('ipfsPosts', JSON.stringify(storedPosts));
@@ -131,7 +137,7 @@ const Modal = ({ handleClose, show, postHash }) => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="conclusion">Enter Your Conclusion:</label>
-                    <textarea id="conclusion"></textarea>
+                    <textarea id="conclusion" value={conclusion} onChange={handleConclusionChange}></textarea>
                 </div>
                 <div className="form-group">
                     <label htmlFor="sources">Enter Your sources as a comma separated list:</label>
