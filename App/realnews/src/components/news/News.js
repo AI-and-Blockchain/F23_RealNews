@@ -6,7 +6,6 @@ import "./News.css"
 
 const News = () => {
   const [mynews, setMyNews] = useState([]);
-
   const fetchPostsFromIPFS = async () => {
     try {
       const storedPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
@@ -20,7 +19,7 @@ const News = () => {
         const url = `https://amber-eligible-bear-775.mypinata.cloud/ipfs/${post.hash}`;
         const response = await axios.get(url);
         console.log('Fetched post data:', response.data);
-        return { ...response.data, title: post.title, source: post.source, upvotes: post.upvotes, downvotes: post.downvotes };
+        return { ...response.data, title: post.title, source: post.source, upvotes: post.upvotes, downvotes: post.downvotes, conclusion: post.conclusion };
       }));
 
       console.log('All fetched posts:', fetchedPosts);
@@ -46,6 +45,16 @@ const News = () => {
     fetchPostsFromIPFS(); // Refresh the component to reflect the changes
   };
 
+  const [showConclsuion, setShowConclusion] = React.useState(false)
+  const onShowConclusion = () => {
+    if (showConclsuion) {
+      setShowConclusion(false)
+    }
+    else {
+      setShowConclusion(true)
+    }
+  }
+
   useEffect(() => {
     fetchPostsFromIPFS();
   }, []);
@@ -69,17 +78,18 @@ const News = () => {
                       <div className="col-3">
                         <a href={ele.source} className="btn btn-primary">Source</a>
                       </div>
-                      <div className="col-3">
-                        <p>Verified</p>
+                      <div className="col-4">
+                      <button className='btn btn-primary' onClick={onShowConclusion}>See Review</button> 
                       </div>
-                      <div className="col-3">
+                      <div className="col-2">
                         <button type="submit" onClick={() => upvote(index)} className="btn btn-success">&uarr;</button>
                         <p>{ele.upvotes}</p>
                       </div>
-                      <div className="col-3">
+                      <div className="col-2">
                         <button type="submit" onClick={() => downvote(index)} className="btn btn-danger">	&darr;</button>
                         <p>{ele.downvotes}</p>
                       </div>
+                      { showConclsuion ? ele.conclusion : null }
                     </div>
                   </div>
                 </div>
