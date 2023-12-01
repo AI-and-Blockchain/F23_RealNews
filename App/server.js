@@ -44,24 +44,60 @@ app.get("/index.html", (req, res) => {
 // const tokenContract = new ethers.Contract(tokenAddress, tokenABI, wallet);
 
 // API endpoint to send ERC-20 tokens
-app.post('/get-tokens', async (req, res) => {
-    console.log(req.body.address)
-    res.status(200).json({success:true})
-    // try {
-    //   // Replace with the recipient's MetaMask address
-    //   const recipientAddress = req.address
-    //   const amount = 100; // Replace with the amount of tokens to send
+// app.post('/get-tokens', async (req, res) => {
+//     console.log(req.body.address)
+//     console.log(req.body.)
+//     res.status(200).json({success:true})
+//     // try {
+//     //   // Replace with the recipient's MetaMask address
+//     //   const recipientAddress = req.address
+//     //   const amount = 100; // Replace with the amount of tokens to send
   
-    //   // Sign and send the transaction
-    //   const tx = await tokenContract.transfer(recipientAddress, amount);
-    //   await tx.wait();
+//     //   // Sign and send the transaction
+//     //   const tx = await tokenContract.transfer(recipientAddress, amount);
+//     //   await tx.wait();
   
-    //   res.status(200).json({ success: true, message: 'Tokens sent successfully' });
-    // } catch (error) {
-    //   console.error('Error sending tokens:', error);
-    //   res.status(500).json({ success: false, message: 'Error sending tokens' });
-    // }
-  });
+//     //   res.status(200).json({ success: true, message: 'Tokens sent successfully' });
+//     // } catch (error) {
+//     //   console.error('Error sending tokens:', error);
+//     //   res.status(500).json({ success: false, message: 'Error sending tokens' });
+//     // }
+//   });
+
+//***************************************************************************************** */
+// app.post('/send-tokens', async (req, res) => {
+//     console.log(req.body.address)
+//     const recipientAddress = req.body.address; // User's wallet address to receive tokens
+//     const tokenAddress = '0x731c133d9bc780dab8f3f78e0660ba165064a8ef'; // Replace with your ERC-20 token contract address
+//     const tokenABI = ['function transfer(address to, uint256 amount) public returns (bool)']; // ERC-20 ABI
+
+//     try {
+//         // Check if the Ethereum provider is included in the request headers
+//         if (req.headers.ethereum) {
+//             const infuraApiKey = '1f6e1bf8a7e7418db98db19b781053fa'; // Replace with your Infura API key
+//             const infuraUrl = `https://sepolia.infura.io/v3/${infuraApiKey}`;
+//             const provider = new ethers.providers.JsonRpcProvider(infuraUrl);
+//             const signer = provider.getSigner();
+
+//             // Create a contract instance of your ERC-20 token
+//             const tokenContract = new ethers.Contract(tokenAddress, tokenABI, signer);
+
+//             const amountToSend = 100; // Adjust the amount as needed
+//             const tx = await tokenContract.transfer(recipientAddress, amountToSend);
+//             await tx.wait();
+//             res.status(200).json({ success: true, message: 'Tokens sent successfully' });
+//         } else {
+//             res.status(400).json({ success: false, message: 'Ethereum provider not detected in request headers' });
+//         }
+//     } catch (error) {
+//         console.error('Error sending tokens:', error);
+//         res.status(500).json({ success: false, message: 'Error sending tokens' });
+//     }
+// });
+
+
+
+
 
 //shell of route for creating a post
 app.post("/createPost", async (req, res) => {
