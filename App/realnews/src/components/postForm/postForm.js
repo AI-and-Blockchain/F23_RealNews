@@ -2,9 +2,24 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './postForm.css';
 
-const saveHash = (postTitle, hash) => {
+// const saveHash = (postTitle, hash) => {
+//   const existingPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
+//   const newPost = { title: postTitle, hash: hash, verified: false, upvotes: 0, downvotes: 0, aiResponse:"", source:""};
+//   existingPosts.push(newPost);
+//   localStorage.setItem('ipfsPosts', JSON.stringify(existingPosts));
+// };
+const saveHash = (postTitle, hash, claim) => {
   const existingPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
-  const newPost = { title: postTitle, hash: hash, verified: false, upvotes: 0, downvotes: 0, aiResponse:"", source:""};
+  const newPost = {
+    title: postTitle,
+    hash: hash,
+    verified: false,
+    upvotes: 0,
+    downvotes: 0,
+    aiResponse: "",
+    source: "",
+    claim: claim, // Include the claim field
+  };
   existingPosts.push(newPost);
   localStorage.setItem('ipfsPosts', JSON.stringify(existingPosts));
 };
@@ -47,7 +62,7 @@ const Modal = ({ handleClose, show }) => {
       const result = await pinJSONToIPFS(post);
       if (result && result.IpfsHash) {
         console.log('Stored on IPFS with hash:', result.IpfsHash);
-        saveHash(postTitle, result.IpfsHash);
+        saveHash(postTitle, result.IpfsHash, postBody);
         setPostTitle('');
         setPostBody('');
         handleClose();
