@@ -11,6 +11,7 @@ class UnverifiedNews extends Component {
             showModal: false,
             currentHash: '',
             posts: [],
+            currentPostBody: null, 
         };
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
@@ -69,6 +70,7 @@ class UnverifiedNews extends Component {
             </>
         )
     }
+
 }
 
 export default UnverifiedNews;

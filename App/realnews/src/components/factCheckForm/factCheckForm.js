@@ -1,10 +1,8 @@
 
 
-
 import './factCheckForm.css';
 import React, { useEffect, useState } from "react";
-import axios from 'axios'
-import { ethers } from "ethers";
+import axios from 'axios';
 import Web3 from 'web3';
 
 const Modal = ({ handleClose, show, postHash }) => {
@@ -15,6 +13,7 @@ const Modal = ({ handleClose, show, postHash }) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [account, setAccount] = useState('');
+  const [chatGPTResponse, setChatGPTResponse] = useState('');
 
   const handleSourceChange = event => {
     setSource(event.target.value);
@@ -25,13 +24,61 @@ const Modal = ({ handleClose, show, postHash }) => {
   };
 
   useEffect(() => {
-    const storedPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
-    const post = storedPosts.find(p => p.hash === postHash);
-    if (post) {
-        setTitle(post.title);
-        setBody(post.body);
-    }
+    const fetchPostBody = async () => {
+      try {
+        const storedPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
+        const post = storedPosts.find(p => p.hash === postHash);
+        if (post) {
+          setTitle(post.title);
+          setBody(post.claim);
+        }
+      } catch (error) {
+        console.error('Error fetching post body:', error);
+      }
+    };
+
+    fetchPostBody();
   }, [postHash]);
+
+  const fetchChatGPTResponse = async () => {
+    try {
+      const apiKey = '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'; // Replace with your OpenAI API key
+      const endpoint = 'https://api.openai.com/v1/chat/completions';
+  
+      const response = await axios.post(
+        endpoint,
+        {
+          model: "gpt-3.5-turbo",
+          messages: [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": `Fact-check the following claim: ${body}`},
+          ],
+          max_tokens: 100,
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+  
+      //setChatGPTResponse(response.data.choices[0].message.content);
+      //console.log(chatGPTResponse);
+      //console.log(response.data.choices[0].message.content);
+      //console.log('ChatGPT API Response:', response.data); // Log the entire response
+      if (response.data.choices && response.data.choices.length > 0) {
+        console.log('ChatGPT Response Text:', response.data.choices[0].message.content);
+        setChatGPTResponse(response.data.choices[0].message.content);
+      } else {
+        console.error('ChatGPT API response is missing "choices" or is empty');
+        setChatGPTResponse('An error occurred while generating a response.');
+      }
+    } catch (error) {
+      console.error('Error fetching ChatGPT response:', error);
+      setChatGPTResponse('An error occurred while generating a response.');
+    }
+  };
 
   const handlePayment = async () => {
     try {
@@ -40,14 +87,12 @@ const Modal = ({ handleClose, show, postHash }) => {
             return;
         }
 
-        // Connect to MetaMask
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const selectedAccount = accounts[0];
 
-        // Create a Web3 instance
         const web3 = new Web3(window.ethereum);
 
-        const tokenAddress = '0x731c133d9bc780daB8F3f78E0660BA165064A8EF'; 
+        const tokenAddress = '0x731c133d9bc780daB8F3f78E0660BA165064A8EF';
 
         const contractABI = [
           {
@@ -70,13 +115,9 @@ const Modal = ({ handleClose, show, postHash }) => {
           }
         ];
 
-
         const tokenContract = new web3.eth.Contract(contractABI, tokenAddress);
-
-        // Adjust the amount to send (in this example, 1 token)
         const amountToSend = web3.utils.toWei('1', 'ether');
 
-        // Call the rewardUser function to send tokens to the selected account
         await tokenContract.methods
             .rewardUser(selectedAccount, amountToSend)
             .send({ from: selectedAccount });
@@ -91,23 +132,19 @@ const Modal = ({ handleClose, show, postHash }) => {
     alert("Open MetaMask Now")
     event.preventDefault();
 
-    // Connect to MetaMask account
     if (window.ethereum) {
         try {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            // Get the first account from the array
             const selectedAccount = accounts[0];
 
-            // Update the state with the connected account
             setAccount(selectedAccount);
 
-            // Call handlePayment after the account is set
             await handlePayment();
         } catch (error) {
             console.error('Error connecting to MetaMask:', error);
         }
     }
-    
+
     const storedPosts = JSON.parse(localStorage.getItem('ipfsPosts')) || [];
     storedPosts.forEach(post => {
         if (post.hash === postHash) {
@@ -119,38 +156,44 @@ const Modal = ({ handleClose, show, postHash }) => {
     localStorage.setItem('ipfsPosts', JSON.stringify(storedPosts));
     handleClose();
   };
-  
+
+  const handleChatGPTResponse = () => {
+    fetchChatGPTResponse();
+  };
+
+
   return (
     <div className={showHideClassName}>
-      <section className="modal-main">
-        <div className='container'>
-            <form onSubmit={handleFactCheck}>
-                <div className="form-group">
-                    <h3>{title}</h3>
-                </div>
-                <div className="form-group">
-                    <p>{body}</p>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="bardResponse">Google Bard's Response to Post:</label>
-                    <p id="bardResponse">Response To Post Here</p>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="conclusion">Enter Your Conclusion:</label>
-                    <textarea id="conclusion" value={conclusion} onChange={handleConclusionChange}></textarea>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="sources">Enter Your sources as a comma separated list:</label>
-                    <textarea id="sources" value={source} onChange={handleSourceChange}></textarea>
-                </div>
-                <div className="form-group form-check">
-                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-                    <label className="form-check-label" htmlFor="exampleCheck1">Real News</label>
-                </div>
-                <div className="form-group form-check">
-                    <input type="checkbox" className="form-check-input" id="exampleCheck2" />
-                    <label className="form-check-label" htmlFor="exampleCheck2">Fake News</label>
-                </div>
+    <section className="modal-main">
+      <div className='container'>
+          <form onSubmit={handleFactCheck}>
+              <div className="form-group">
+                  <h3>{title}</h3>
+              </div>
+              <div className="form-group">
+                  <p>{body}</p>
+              </div>
+              <div className="form-group">
+                  <label htmlFor="bardResponse">Chat GPT's Response to Post:</label>
+                  <p id="bardResponse">{chatGPTResponse}</p>
+              </div>
+              <div className="form-group">
+                  <label htmlFor="conclusion">Enter Your Conclusion:</label>
+                  <textarea id="conclusion" value={conclusion} onChange={handleConclusionChange}></textarea>
+              </div>
+              <div className="form-group">
+                  <label htmlFor="sources">Enter Your sources as a comma-separated list:</label>
+                  <textarea id="sources" value={source} onChange={handleSourceChange}></textarea>
+              </div>
+              <div className="form-group form-check">
+                  <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                  <label className="form-check-label" htmlFor="exampleCheck1">Real News</label>
+              </div>
+              <div className="form-group form-check">
+                  <input type="checkbox" className="form-check-input" id="exampleCheck2" />
+                  <label className="form-check-label" htmlFor="exampleCheck2">Fake News</label>
+              </div>
+              <button type="button" className="btn btn-primary" onClick={handleChatGPTResponse}>Get ChatGPT Response</button>
                 <button type="submit" className="btn btn-primary">Submit Review</button>
             </form>
         </div>
@@ -162,3 +205,5 @@ const Modal = ({ handleClose, show, postHash }) => {
 };
 
 export default Modal;
+
+
